@@ -1,4 +1,4 @@
 dante-gem-demo
 ==============
 
-Roo is a gem to interact with various type of spreadsheets easily. Please find the sample script.
+Dante is a gem to make any ruby script as a daemon/background process. Please find the sample script.
