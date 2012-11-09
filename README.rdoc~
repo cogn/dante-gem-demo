@@ -1,0 +1,25 @@
+Run these commands to try it out.
+
+  bundle
+  rake db:setup
+  rails s
+
+This application basically using sqlite db
+
+->We need to have the sqlite3 gem so please do the bundle before runnig the app.
+
+->To cehck the following url to get the commands for sqlite.generally it's like normal sql command.
+  Ref url : http://www.sqlite.org/sqlite.html
+
+->We can check the database whether it has created or not from the application
+
+  Run : rails db
+
+  This will connect to the development DB
+
+->once you run the rake db:setup it will create an database in db folder inside the application.
+
+Guideline
+
+->Readme url forjquery-datatables-rails - https://github.com/rweng/jquery-datatables-rails
+
