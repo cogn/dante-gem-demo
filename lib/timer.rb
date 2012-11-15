@@ -2,7 +2,6 @@
 
 require 'rubygems'
 require 'dante'
-require 'private_pub'
 require 'roo'
 
 ENV["RAILS_ENV"] ||= "development"
@@ -18,28 +17,30 @@ end
 @pid = '/tmp/dante.pid'
 @log_path = '/tmp/dante.log'
 
-def print_each_cat_count
-    Rails.logger.info "This daemon is started at #{Time.now}.\n"
+# this method will logs the products count by category-wise for every minute
+def products_count
+    logger = Logger.new('products_count.log')
+    logger.info "This daemon is started at #{Time.now}.\n"
     loop{
-        products = Product.count(:all, :group => :category_id)
-        Rails.logger.info " ----- Product Category Count ----"
-        products.each do |p|
-          
+        p_count = Product.count(:all, :group => :category)
+        logger.info " ----- Product Category Count ----"
+        p_count.each do |name, count|
+          logger.info "#{name}: #{count}"        
         end
-        sleep 10
+        sleep 60
     }
 end
 
 case ARGV[0]
 when 'start'
-  Dante::Runner.new('suppress').execute(:daemonize => true, :pid_path => @pid, :log_path => @log_path) { 
-    print_each_cat_count
+  Dante::Runner.new('products_count').execute(:daemonize => true, :pid_path => @pid, :log_path => @log_path) { 
+    products_count
   }
 when 'stop'
-  Dante::Runner.new('suppress').execute(:kill => true, :pid_path => @pid)
+  Dante::Runner.new('products_count').execute(:kill => true, :pid_path => @pid)
 when 'restart'
-  Dante::Runner.new('suppress').execute(:daemonize => true, :restart => true, :pid_path => @pid) {   
-    print_each_cat_count
+  Dante::Runner.new('products_count').execute(:daemonize => true, :restart => true, :pid_path => @pid) {   
+    products_count
   }
 else
   puts "Enter valid params"
